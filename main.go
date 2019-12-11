@@ -3,9 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
+	"log"
+	"net"
+
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
-	"net"
 )
 
 // TODO
@@ -46,7 +48,7 @@ func isSane(iface net.Interface) bool {
 func getInterface() (string, error) {
 	ifaces, err := net.Interfaces()
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	for _, iface := range ifaces {
 		if isSane(iface) {
@@ -60,11 +62,11 @@ func getInterface() (string, error) {
 func main() {
 	iface, err := getInterface()
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	handle, err := pcap.OpenLive(iface, 65536, true, pcap.BlockForever)
 	if err != nil {
-		panic(err)
+		log.Panic(err)
 	}
 	defer handle.Close()
 
