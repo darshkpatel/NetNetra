@@ -2,20 +2,12 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )
-
-// TODO
-// Decide upon what to and what not to index in ElasticSearch out of all packet info
-// This function should index packet data in ElasticSearch
-func handlePacket(packet gopacket.Packet) {
-	fmt.Println(packet)
-}
 
 // Borrowed from examples https://github.com/google/gopacket/blob/0ad7f2610e344e58c1c95e2adda5c3258da8e97b/examples/arpscan/arpscan.go#L58
 // From all the interfaces, checks for sane interfaces
@@ -71,10 +63,7 @@ func main() {
 	defer handle.Close()
 
 	src := gopacket.NewPacketSource(handle, handle.LinkType())
-	for {
-		var packet gopacket.Packet
-		fmt.Println(packet)
-		packet = <-src.Packets()
+	for packet := range src.Packets() {
 		go handlePacket(packet)
 	}
 }
