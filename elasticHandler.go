@@ -11,7 +11,7 @@ import (
 // converts to json and send data to elastic
 //Refer https://github.com/dvas0004/GolangSimpleDnsSniffer
 // ToDo: Use WaitGroups
-func sendToElastic(data deserializedPacket, wg *sync.WaitGroup) {
+func sendPacketToElastic(data deserializedPacket, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	var jsonMsg, jsonErr = json.Marshal(data)
@@ -37,5 +37,10 @@ func sendToElastic(data deserializedPacket, wg *sync.WaitGroup) {
 	}
 
 	defer resp.Body.Close()
+
+}
+
+func sendFlowToElastic(data deserializedFlow, wg *sync.WaitGroup) {
+	// TODO
 
 }
