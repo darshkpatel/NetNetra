@@ -1,10 +1,11 @@
 package main
 
 import (
-	"log"
-
+	"crypto/sha256"
+	"fmt"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
+	"log"
 )
 
 // DecodedPacket holds necessary information extracted from packet
@@ -21,7 +22,7 @@ type DecodedPacket struct {
 	ipv6 layers.IPv6
 
 	Payload  gopacket.Payload
-	FlowHash uint64 //Can be used to track Flows/Sessions in future
+	FlowHash []byte //Used to map each packet to a Flow
 	NetFlow  gopacket.Flow
 
 	Parser *gopacket.DecodingLayerParser
@@ -62,23 +63,18 @@ func handlePacket(packet gopacket.Packet) {
 			log.Println("IPv4: ", decodedPacket.ipv4.SrcIP, "->", decodedPacket.ipv4.DstIP)
 
 		case layers.LayerTypeTCP:
-			decodedPacket.FlowHash = hashCombine(decodedPacket.NetFlow.FastHash(), decodedPacket.TCP.TransportFlow().FastHash())
+			flowHash := computeFlowHash(decodedPacket.NetFlow)
+			decodedPacket.FlowHash = flowHash
 		}
 	}
 }
 
-// based on boost::hash_combine
-// http://www.boost.org/doc/libs/1_63_0/boost/functional/hash/hash.hpp
-func hashCombine(h, k uint64) uint64 {
-	m := uint64(0xc6a4a7935bd1e995)
-	r := uint64(47)
-
-	k *= m
-	k ^= k >> r
-	k *= m
-
-	h ^= k
-	h *= m
-
-	return h + 0xe6546b64
+// Since FastHash cannot be used as a key, this function computes hash of Flow object
+// which can be used as a key.
+// Ref: https://godoc.org/github.com/google/gopacket#Flow
+func computeFlowHash(flow gopacket.Flow) []byte {
+	h := sha256.New()
+	byteTemp := fmt.Sprintf("%v", flow)
+	flowHash := h.Sum([]byte(byteTemp))
+	return flowHash
 }

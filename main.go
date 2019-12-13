@@ -2,11 +2,10 @@ package main
 
 import (
 	"errors"
-	"log"
-	"net"
-
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
+	"log"
+	"net"
 )
 
 // Borrowed from examples https://github.com/google/gopacket/blob/0ad7f2610e344e58c1c95e2adda5c3258da8e97b/examples/arpscan/arpscan.go#L58
