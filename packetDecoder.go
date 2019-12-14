@@ -3,10 +3,15 @@ package main
 import (
 	"crypto/sha256"
 	"fmt"
+	"log"
+	"sync"
+
+	"github.com/agarwalarjun123/NetNetra/model"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
-	"log"
 )
+
+var wg sync.WaitGroup
 
 // DecodedPacket holds necessary information extracted from packet
 type DecodedPacket struct {
@@ -45,6 +50,9 @@ func createDecodedPacket() *DecodedPacket {
 
 // This function should decode packets and create a DecodedPacket Object with necessary decoded layers
 func handlePacket(packet gopacket.Packet) {
+	wg.Add(1)
+	defer wg.Done()
+
 	decodedPacket := createDecodedPacket()
 
 	err := decodedPacket.Parser.DecodeLayers(packet.Data(), &decodedPacket.decodedLayers)
@@ -66,7 +74,17 @@ func handlePacket(packet gopacket.Packet) {
 			flowHash := computeFlowHash(decodedPacket.NetFlow)
 			decodedPacket.FlowHash = flowHash
 		}
+
 	}
+	//TODO Deserialization from decoded Packet and indexing
+	d := deserializePacket(decodedPacket)
+	Elerr := model.Index(&d)
+	//handling errors in stream of packets
+	if Elerr != nil {
+		fmt.Print(Elerr)
+	}
+	fmt.Printf("%+v", d)
+
 }
 
 // Since FastHash cannot be used as a key, this function computes hash of Flow object
