@@ -1,0 +1,10 @@
+  elasticsearch:
+      container_name: es
+      image: elasticsearch:6.5.4
+      environment:
+        - ES_JAVA_OPTS=-Xms512M -Xmx512M
+        - discovery.type=single-node 
+      volumes:
+        - ./elasticdata:/usr/share/elasticsearch/data
+      ports:
+        - 9200:9200
