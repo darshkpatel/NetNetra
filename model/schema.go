@@ -6,22 +6,24 @@ import (
 )
 
 type DeserializedPacket struct {
-	FlowHash    string
-	NetFlow     string
-	Payload     string
-	IPv4Length  uint16
-	SrcPort     uint32
-	DstPort     uint32
-	DstMAC      string
-	SrcMAC      string
-	TTL         uint8
-	SrcIP       string
-	DstIP       string
-	DnsRespCode string
+	FlowHash       string
+	TCPContentType string
+	NetFlow        string
+	Payload        string
+	IPv4Length     uint16
+	SrcPort        uint32
+	DstPort        uint32
+	DstMAC         string
+	SrcMAC         string
+	TTL            uint8
+	SrcIP          string
+	DstIP          string
+	DnsRespCode    string
+	DnsContent     string
 }
 
 //TODO Mapping subject to Change
-const Mapping = `{"mappings":{"packet":{"properties":{"FlowHash":{"type":"keyword"},"NetFlow":{"type":"text"},"Payload":{"type":"text"},"IPv4Length":{"type":"long"},"SrcPort":{"type":"keyword"},"DstPort":{"type":"keyword"},"DstMAC":{"type":"text"},"SrcMAC":{"type":"text"},"TTL":{"type":"long"},"SrcIP":{"type":"text"},"DstIP":{"type":"text"},"DnsRespCode":{"type":"text"}}}}}`
+const Mapping = `{"mappings":{"packet":{"properties":{"DnsContent":{"type":"string"},"TCPContentType":{"type":"keyword"},"FlowHash":{"type":"keyword"},"NetFlow":{"type":"text"},"Payload":{"type":"text"},"IPv4Length":{"type":"long"},"SrcPort":{"type":"keyword"},"DstPort":{"type":"keyword"},"DstMAC":{"type":"text"},"SrcMAC":{"type":"text"},"TTL":{"type":"long"},"SrcIP":{"type":"text"},"DstIP":{"type":"text"},"DnsRespCode":{"type":"text"}}}}}`
 
 // Index Function indexes the deserialized packet into packet index
 func Index(ds *DeserializedPacket) error {
