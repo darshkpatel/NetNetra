@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/agarwalarjun123/NetNetra/model"
+	"github.com/darshkpatel/NetNetra/model"
 )
 
 // takes DecodedPacket and returns a deserializedPacket with the necessary fields to index on elasticsearch
