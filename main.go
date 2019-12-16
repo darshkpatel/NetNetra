@@ -5,7 +5,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/agarwalarjun123/NetNetra/model"
+	"github.com/darshkpatel/NetNetra/model"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )
