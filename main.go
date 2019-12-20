@@ -2,10 +2,12 @@ package main
 
 import (
 	"errors"
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/pcap"
 	"log"
 	"net"
+
+	"github.com/darshkpatel/NetNetra/model"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
 )
 
 // Borrowed from examples https://github.com/google/gopacket/blob/0ad7f2610e344e58c1c95e2adda5c3258da8e97b/examples/arpscan/arpscan.go#L58
@@ -51,6 +53,12 @@ func getInterface() (string, error) {
 }
 
 func main() {
+
+	_, err := model.Connect()
+	if err != nil {
+		log.Panic(err)
+	}
+
 	iface, err := getInterface()
 	if err != nil {
 		log.Panic(err)
