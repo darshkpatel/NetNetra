@@ -1,4 +1,4 @@
-name: Go Build Test
+name: Build
 on: [pull_request]
 jobs:
   build:
@@ -19,7 +19,6 @@ jobs:
         go-version: 1.13
       id: go
 
- 
     - name: Install libpcap on ubuntu
       if: matrix.platform == 'ubuntu-latest'
       run: sudo apt-get install libpcap-dev
