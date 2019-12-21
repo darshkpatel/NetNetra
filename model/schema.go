@@ -18,8 +18,8 @@ type DeserializedPacket struct {
 	TTL            uint8
 	SrcIP          string
 	DstIP          string
-	DnsRespCode    string
-	DnsContent     string
+	DNSRespCode    string
+	DNSContent     string
 }
 
 //TODO Mapping subject to Change
