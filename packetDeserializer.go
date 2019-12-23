@@ -22,8 +22,6 @@ func deserializePacket(decodedpacket *DecodedPacket) model.DeserializedPacket {
 		TTL:            decodedpacket.ipv4.TTL,
 		SrcIP:          decodedpacket.ipv4.SrcIP.String(),
 		DstIP:          decodedpacket.ipv4.DstIP.String(),
-		DnsRespCode:    decodedpacket.DNS.ResponseCode.String(),
-		DnsContent:     string(decodedpacket.DNS.Payload()),
 	}
 	return deserializedpacket
 }
